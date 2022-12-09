@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent){
     l_record_stack = new QVBoxLayout;
     w_playback_stack = new QWidget;
     l_playback_stack = new QVBoxLayout;
+    w_toolbox = new QToolBox;
     status_bar = new QStatusBar;
     w_vid_list = new QListWidget;
     w_vid_list->setWindowTitle("Recorded Videos");
@@ -48,15 +49,21 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent){
 
     b_quit = new QPushButton("Quit") ;
     b_switch_cam = new QPushButton("Switch Cameras");
-    b_playback = new QPushButton("Play Recorded Video");
-    b_capture = new QPushButton("Capture Image") ;
-    b_record = new QPushButton("Record Video") ;
-    b_stop = new QPushButton("Stop Recording") ;
+
+    b_capture = new QPushButton ;
+    b_capture->setIcon(QIcon("../MRUI/shoot.png"));
+    b_capture->setIconSize(QSize(50, 50));
+    b_record = new QPushButton ;
+    b_record->setIcon(QIcon("../MRUI/record.png"));
+    b_record->setIconSize(QSize(50, 50));
+    b_stop = new QPushButton;
+    b_stop->setIcon(QIcon("../MRUI/stop.png"));    
+    b_stop->setIconSize(QSize(50, 50));
     b_stop->setEnabled(false);
 
     d_toolbar->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
     d_player2->setAllowedAreas(Qt::NoDockWidgetArea);
-
+        getVideos();    
     assign();
     populate();
 }
@@ -75,8 +82,7 @@ void MainWindow::assign(){
     connect(b_stop, SIGNAL(clicked()), second_view, SLOT(stop()));
     connect(b_quit, SIGNAL(clicked()), this, SLOT(quitApp()));
     connect(w_vid_list, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(playVideos(QListWidgetItem*)));
-    connect(b_playback, SIGNAL(clicked()), this, SLOT(swapMenu()));
-    connect(b_playback, SIGNAL(clicked()), this, SLOT(playBack()));
+
     connect(b_switch_cam, SIGNAL(clicked()), this, SLOT(swapCameras()));
 }
 void MainWindow::populate(){
@@ -84,18 +90,15 @@ void MainWindow::populate(){
     l_record_stack->addWidget(b_record);
     l_record_stack->addWidget(b_stop);
     w_record_stack->setLayout(l_record_stack);
-    w_stack->addWidget(w_record_stack);
-    w_stack->addWidget(w_vid_list);
+    w_toolbox->addItem(w_record_stack, "Capture Video and Images");
+    w_toolbox->addItem(w_vid_list, "Play Recorded");
     l_toolbar->addWidget(label);
     l_toolbar->addWidget(b_switch_cam);
-    l_toolbar->addWidget(b_playback);
-    l_toolbar->addWidget(w_stack);
-    l_toolbar->addStretch(200);
+    l_toolbar->addWidget(w_toolbox);
     l_toolbar->addStretch(200);
     l_toolbar->addWidget(b_quit);
     w_toolbar->setLayout(l_toolbar);
     d_toolbar->setWidget(w_toolbar);
-
     l_player2->addWidget(second_view);
     w_player2->setLayout(l_player2);
     d_player2->setWidget(w_player2);
@@ -147,7 +150,6 @@ void MainWindow::playBack(){
             main_view->play(video_loc);
             second_view->play(video_loc2);
         }
-        b_playback->setText("Live video");
         status_bar->showMessage(video_loc);
         playback = true;
     } else {
@@ -158,7 +160,6 @@ void MainWindow::playBack(){
             main_view->play(0);
             second_view->play(1);
         }
-        b_playback->setText("Play Recorded Video");
         status_bar->showMessage("Playing Live Video");
         playback = false;        
     }

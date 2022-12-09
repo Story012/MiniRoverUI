@@ -13,7 +13,7 @@
 #include <QPixmap>
 #include <QStatusBar>
 #include <QMainWindow>
-#include <QLabel>
+#include <QLabel>.
 #include <QPushButton>
 #include <QListWidgetItem>
 #include <QListWidget>
@@ -21,6 +21,7 @@
 #include <QDockWidget>
 #include <QVBoxLayout>
 #include <QStackedWidget>
+#include <QToolBox>
 
 class MainWindow : public QMainWindow{
     Q_OBJECT
@@ -56,13 +57,14 @@ private:
     QDockWidget *d_toolbar; 
     QVBoxLayout *l_player2;
     QVBoxLayout *l_toolbar;
+    QToolBox *w_toolbox;
     QPixmap arc_logo;
     QLabel *label;
     QListWidget *w_vid_list;
     QPushButton *b_quit;
     QPushButton *b_capture;
     QPushButton *b_switch_cam;
-    QPushButton *b_playback;
+
     QPushButton *b_record;
     QPushButton *b_stop;
     CamView *main_view;

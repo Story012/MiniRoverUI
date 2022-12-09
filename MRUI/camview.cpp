@@ -134,7 +134,7 @@ void CamView::play(const QString &file) {
 
 QString CamView::fileName(){
     QString file_name = CamView::currPath();
-    file_name += "/"+ QDateTime::currentDateTime().toString("yy-mm-dd_hh~mm-")
+    file_name += "/"+ QDateTime::currentDateTime().toString("yy-MM-dd_hh~mm-")
                + QString::number(m_idx);
     return file_name;
 }
